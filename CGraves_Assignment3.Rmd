@@ -1,0 +1,94 @@
+---
+title: "Assignment 3 Regression Analysis"
+output: html_document
+date: "2025-11-30"
+name: Chantell Graves
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Upload Data
+cereal_data <- read.csv("C:\\Users\\grave\\Downloads\\cereal.csv")
+library(tidyverse)
+library(broom)
+
+#Explore the data structure
+head(cereal_data)
+summary(cereal_data)
+str(cereal_data)
+
+```
+
+```{r}
+#Clean data check for missing values
+cereal_data <- na.omit(cereal_data)
+```
+
+```{r}
+#Exploratory data analysis
+#Measures of central tendency
+mean_sugars <- mean(cereal_data$sugars)
+mean_rating <- mean(cereal_data$rating)
+mean_shelf <- mean(cereal_data$shelf)
+median_sugars <- median(cereal_data$sugars)
+median_rating <- median(cereal_data$rating)
+median_shelf <- median(cereal_data$shelf)
+
+#Measures of variability
+sd_sugars <- sd(cereal_data$sugars)
+sd_rating <- sd(cereal_data$rating)
+sd_shelf <- sd(cereal_data$shelf)
+
+#View results
+mean_sugars
+median_sugars
+sd_sugars
+mean_rating
+median_rating
+sd_rating
+mean_shelf
+median_shelf
+sd_shelf
+
+```
+
+```{r}
+#Build a regression model
+#Simple linear regression customer rating vs grams of sugar
+ggplot(cereal_data, aes(x = sugars, y = rating)) +
+  geom_point(alpha = 0.8) +
+  stat_smooth(method = "lm") +
+  labs(
+    title = "Customer Rating Based on Sugars",
+    x = "Grams of Sugars",
+    y = "Customer Rating"
+  )
+model <- lm(rating ~ sugars, data = cereal_data)
+summary(model)
+```
+
+```{r}
+#Build a regression model
+#Simple linear regression customer rating vs shelf placement
+ggplot(cereal_data, aes(x = shelf, y = rating)) +
+  geom_point(alpha = 10) +
+  stat_smooth(method = "lm") +
+  labs(
+    title = "Customer Rating Based on Shelf Placement",
+    x = "Shelf Placement 1,2, or 3",
+    y = "Customer Rating"
+  )
+model <- lm(rating ~ shelf, data = cereal_data)
+summary(model)
+```
+
+```{r}
+#Build a regression model
+#Multiple linear regression customer rating vs grams of sugar and grams of fiber
+model <- lm(rating ~ sugars + shelf, data = cereal_data)
+summary(model)
+```
+
